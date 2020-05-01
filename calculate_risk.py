@@ -72,9 +72,9 @@ def view():
     month = flask.request.form['month']
     day = flask.request.form['day']
     weather_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
-                                 json_file='weather.json')
+                                 json_file='json/weather.json')
     accident_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
-                                  json_file='accident.json')
+                                  json_file='json/accident.json')
     weather_point, accident_point, risk_value = calculate_risk(
         float(latitude),
         float(longitude),
@@ -90,7 +90,8 @@ def view():
             'longitude': longitude,
             'month': month,
             'day': day,
-            'result': risk_value,
+            # Return the risk as a percentage value.
+            'result': int(risk_value * 100),
     })
 
 def main():

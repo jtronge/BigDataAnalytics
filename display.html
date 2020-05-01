@@ -19,6 +19,24 @@ input, select {
     background: #aaaaaa;
     box-sizing: border-box;
 }
+div.result {
+    width: 600px;
+    box-sizing: border-box;
+    background: #aaaaaa;
+    padding: 4em;
+    margin: 1em 0em;
+    display: flex;
+}
+div.risk {
+    color: #FFFFFF;
+    background: #AA0000;
+    padding: 2em;
+}
+div.other {
+    color: #FFFFFF;
+    background: #000000;
+    padding: 2em;
+}
     </style>
 </head>
 
@@ -58,7 +76,16 @@ input, select {
         <input type="submit" value="Analyze">
     </form>
 
-    {{result}}
+    {% if result %}
+        <div class="result">
+            <div class="risk" style="width: {{ result }}%;">
+                <p>{{ result }}%</p>
+            </div>
+            <div class="other" style="width: {{ 100 - result }}%;">
+            </div>
+        </div>
+    {% endif %}
+
 </body>
 
 </html>
