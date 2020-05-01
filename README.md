@@ -18,7 +18,7 @@ python -m venv venv
 Then you need to install all of our dependencies:
 
 ```
-pip -r requirements.txt
+pip install -r requirements.txt
 
 ```
 
@@ -28,7 +28,7 @@ After that you can run the program:
 python calculate_risk.py
 ```
 
-Open a web browser (preferrably Mozilla Firefox or Google Chrome) and browse
+Open a web browser (preferably Mozilla Firefox or Google Chrome) and browse
 to http://localhost:8080/. You should be presented with an interface that you
 can interact with.
 
