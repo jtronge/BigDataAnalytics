@@ -28,7 +28,9 @@ After that you can run the program:
 python calculate_risk.py
 ```
 
-Open a web browser (preferably Mozilla Firefox or Google Chrome) and browse
-to http://localhost:8080/. You should be presented with an interface that you
-can interact with.
+You will have to wait a minute or two while the program loads the stored trees
+into memory. When the trees are fully loaded you can open a web browser
+(preferably Mozilla Firefox or Google Chrome) and browse to
+<http://localhost:8080/>. You should be presented with an interface that you can
+interact with.
 

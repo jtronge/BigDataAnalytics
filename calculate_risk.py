@@ -17,14 +17,26 @@ import kdtree
 
 app = flask.Flask(__name__)
 
+# Load the trees
+try:
+    print('Loading trees...', end='')
+    sys.stdout.flush()
+    weather_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
+                                 json_file='json/weather.json')
+    accident_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
+                                  json_file='json/accident.json')
+    print('done', end='\n\n')
+except:
+    print('Unable to load trees. "json/accident.json" or "json/weather.json" may not exist.', file=sys.stderr)
+    sys.exit(1)
+
 def convert_from_dms(degree, minute, second, direction):
     """
     Convert from degrees-minute-second form to decimal form and return it.
     """
     return direction * (degree + (1.0 / 60.0) * minute + (1.0 / 3600.0) * second)
 
-def calculate_risk(latitude, longitude, month, day, weather_tree, accident_tree,
-                   k=10):
+def calculate_risk(latitude, longitude, month, day, k=10):
     """
     Calculate and return the risk for a given vehicle route. Returns a tuple of
     the form (weather_point, accident_point, risk).
@@ -86,18 +98,12 @@ def view():
                                  int(flask.request.form['longitude_direction']))
     month = flask.request.form['month']
     day = flask.request.form['day']
-    weather_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
-                                 json_file='json/weather.json')
-    accident_tree = kdtree.KDTree(features=['latitude', 'longitude', 'date'],
-                                  json_file='json/accident.json')
     print('Calculating risk for', latitude, '(latitude) and', longitude, '(longitude).')
     weather_point, accident_point, risk_value = calculate_risk(
         float(latitude),
         float(longitude),
         int(month),
         int(day),
-        weather_tree,
-        accident_tree
     )
     # Load and render the template
     return render({
