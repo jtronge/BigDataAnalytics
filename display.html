@@ -13,6 +13,9 @@ input, select {
     box-sizing: border-box;
     margin: 1em 0em;
 }
+.error {
+    font-weight: bold;
+}
 #mainForm {
     padding: 1em;
     max-width: 600px;
@@ -37,6 +40,12 @@ div.other {
     background: #000000;
     padding: 2em;
 }
+div.inline-form {
+    display: flex;
+}
+div.inline-form > div {
+    padding: 0 0.2em 0 0;
+}
     </style>
 </head>
 
@@ -46,7 +55,7 @@ div.other {
         <div>
             <label for="month">Month</label>
             <select id="month" name="month" type="text">
-                <option>Select Month...</option>
+                <option value="">Select Month...</option>
                 <option value="1">January</option>
                 <option value="2">Feburary</option>
                 <option value="3">March</option>
@@ -61,17 +70,55 @@ div.other {
                 <option value="12">December</option>
             </select>
         </div>
+        <p id="monthErrorMessage" class="error"></p>
         <div>
             <label for="day">Day</label>
             <input id="day" name="day" type="number" min="0" max="31">
         </div>
-        <div>
-            <label for="latitude">Latitude</label>
-            <input id="latitude" name="latitude" type="number" step="0.1">
+        <p id="dayErrorMessage" class="error"></p>
+        <p>Latitude</p>
+        <div class="inline-form">
+            <div>
+                <label for="latitude_degree">Degree</label>
+                <input id="latitude_degree" name="latitude_degree" type="number" step="1" min="0" max="90" value="0">
+            </div>
+            <div>
+                <label for="latitude_minute">Minute</label>
+                <input id="latitude_minute" name="latitude_minute" type="number" step="1" min="0" max="59" value="0">
+            </div>
+            <div>
+                <label for="latitude_second">Second</label>
+                <input id="latitude_second" name="latitude_second" type="number" step="1" min="0" max="59" value="0">
+            </div>
+            <div>
+                <label for="latitude_direction">Direction</label>
+                <select id="latitude_direction" name="latitude_direction">
+                    <option value="1">N</option>
+                    <option value="-1">S</option>
+                </select>
+            </div>
         </div>
-        <div>
-            <label for="longitude">Longitude</label>
-            <input id="longitude" name="longitude" type="number" step="0.1">
+        <p>Longitude</p>
+        <div class="inline-form">
+            <div>
+                <label for="longitude_degree">Degree</label>
+                <input id="longitude_degree" name="longitude_degree" type="number" step="1" min="0" max="180" value="0">
+            </div>
+            <div>
+                <label for="longitude_minute">Minute</label>
+                <input id="longitude_minute" name="longitude_minute" type="number" step="1" min="0" max="59" value="0">
+            </div>
+            <div>
+                <label for="longitude_second">Second</label>
+                <input id="longitude_second" name="longitude_second" type="number" step="1" min="0" max="59" value="0">
+            </div>
+            <div>
+                <label for="longitude_direction">Direction</label>
+                <select id="longitude_direction" name="longitude_direction">
+                    <option value="1">E</option>
+                    <option value="-1">W</option>
+                </select>
+            </div>
         </div>
         <input type="submit" value="Analyze">
     </form>
@@ -85,6 +132,34 @@ div.other {
             </div>
         </div>
     {% endif %}
+
+    <script type="text/javascript">
+window.addEventListener("load", function () {
+    let month = document.querySelector("#month");
+    let monthErrorMessage = document.querySelector("#monthErrorMessage");
+    let day = document.querySelector("#day");
+    let dayErrorMessage = document.querySelector("#dayErrorMessage");
+    let mainForm = document.querySelector("#mainForm");
+    mainForm.addEventListener("submit", function (e) {
+        let error = false;
+        // Clear the error messages
+        monthErrorMessage.innerText = "";
+        dayErrorMessage.innerText = "";
+        if (month.value.length == 0) {
+            error = true;
+            monthErrorMessage.innerText = "* You must choose a valid month.";
+        }
+        if (day.value.length == 0) {
+            error = true;
+            dayErrorMessage.innerText = "* You must enter a valid day.";
+        }
+        if (error) {
+            // Prevent the POST
+            e.preventDefault();
+        }
+    });
+});
+    </script>
 
 </body>
 
